@@ -28,13 +28,25 @@
         <param name="scan_destination_topic"  value="/scan" />
         <!-- Source scant topics -->
         <param name="laserscan_topics" value="/front/scan /rear/scan" />
+
+        <!-- TODO: try to understand what these do -->
+    	<param name="angle_min" value="-3.14159"/>
+	    <param name="angle_max" value="3.14159"/>
+	    <param name="range_min" value="0.08"/>
+	    <param name="range_max" value="16.0"/>
         
     </node>
 
     <!-- Run gmapper to perform map creation -->
+    <!-- Please refer to the followint link to get info about values -->
+    <!-- https://wiki.ros.org/action/fullsearch/gmapping -->
     <node pkg="gmapping" type="slam_gmapping" name="slam_gmapping" output="screen">
+        <!-- TODO: try to understand how to set these values -->
         <param name="linearUpdate" value="0.0"/>
         <param name="angularUpdate" value="0.0"/>
+	    <param name="map_update_interval" value="4"/>
+	    <param name="maxUrange" value="16.0"/>
+	    <param name="sigma" value="0.01"/>
     </node>
     
 </launch>
