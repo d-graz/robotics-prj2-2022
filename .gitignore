@@ -59,8 +59,11 @@ CATKIN_IGNORE
 # Default CmakeLists.txt
 src/CmakeLists.txt
 
-# used for bag debug
+# Used for bag debug
 tmp/
 
-# ignore ros_readbagfile.py script
+# Saving maps
+maps/
+
+# Ignore ros_readbagfile.py script
 ros_readbagfile.py
