@@ -14,7 +14,7 @@
     <param name="use_sim_time" type="boolean" value="true" />
 
     <!-- Run rviz to visualize map creation with precofigured view-->
-    <node pkg="rviz" type="rviz" name="rviz" args="-d $(find project2)/launch/rviz_view.rviz" />
+    <node pkg="rviz" type="rviz" name="rviz" args="-d $(find project2)/launch/rviz_map.rviz" />
 
     <!-- Run ira_laser_tools and configuration to merge laser scans -->
     <!-- https://qiita.com/MMM-lab/items/84cdf9a8ad97324e10ed -->

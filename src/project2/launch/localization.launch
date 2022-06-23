@@ -1,0 +1,81 @@
+<launch>
+  <!--  ******Args *****  -->
+  <arg name="map_file"       default="$(find project2)/launch/map.yaml"/> 
+  <arg name="use_map_topic"   default="true"/>
+  <arg name="scan_topic"      default="scan"/> 
+  <arg name="initial_pose_x"  default="0.0"/>
+  <arg name="initial_pose_y"  default="0.0"/>
+  <arg name="initial_pose_a"  default="0.0"/>
+  <arg name="odom_frame_id"   default="odom"/>
+  <arg name="base_frame_id"   default="base_footprint"/>
+  <arg name="global_frame_id" default="map"/>
+
+  <!-- TF handling -->
+  <node pkg="tf" type="static_transform_publisher" name="tf_laser_front" args="0.35 0.0 0.0 0.0 0.0 0.5150381 0.8571673 /base_link /laser_front 100" /> 
+  <node pkg="tf" type="static_transform_publisher" name="tf_laser_rear" args="-0.35 0.0 0.0 0.0 0.0 0.866 0.5 /base_link /laser_rear 100" />
+  <node pkg="tf" type="static_transform_publisher" name="tf_base_link" args="0.0 0.0 0.0 0.0 0.0 0.0 1.0 /base_footprint /base_link 100" />
+  <node pkg="dynamic_broadcaster" type="odom_dynamic_broadcaster" name="odom_dynamic_broadcaster" output="screen" />
+
+  <!-- Set simulation time to avoid removal of messages as old -->
+  <param name="use_sim_time" type="boolean" value="true" />
+  
+  <!--  ****** Maps *****  -->
+  <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)">
+    <param name="frame_id" value="map"/>
+  </node>
+
+  <!--  ****** IRA Laser tools *****  -->
+  <node pkg="ira_laser_tools" type="laserscan_multi_merger" name="laserscan_multi_merger" output="screen">
+    <param name="destination_frame" value="base_link" />
+    <param name="cloud_destination_topic" value="/merged_cloud" />
+    <param name="scan_destination_topic"  value="/scan" />
+    <param name="laserscan_topics" value="/front/scan /rear/scan" />
+    <param name="angle_min" value="-3.14159"/>
+	  <param name="angle_max" value="3.14159"/>
+	  <param name="range_min" value="0.08"/>
+	  <param name="range_max" value="16.0"/>
+  </node>
+
+  <!--  ****** AMCL *****  -->
+  <node pkg="amcl" type="amcl" name="amcl">
+    <!--  ****** TODO : fix parameters , currently broken badly *****  -->
+    <param name="use_map_topic"             value="$(arg use_map_topic)"/>
+    <param name="odom_model_type"           value="diff"/> <!--  da capire la cinematica del robot  -->
+    <param name="odom_alpha1"               value="0.2"/>
+    <param name="odom_alpha2"               value="0.2"/>
+    <param name="odom_alpha3"               value="0.2"/>
+    <param name="odom_alpha4"               value="0.2"/>
+    <param name="odom_alpha5"               value="0.1"/>
+    <param name="gui_publish_rate"          value="10.0"/>
+    <param name="laser_max_beams"             value="60"/>
+    <param name="laser_max_range"           value="16.0"/>
+    <param name="min_particles"             value="1000"/>
+    <param name="max_particles"             value="5000"/>
+    <param name="kld_err"                   value="0.05"/>
+    <param name="kld_z"                     value="0.99"/>
+    <param name="laser_z_hit"               value="0.5"/>
+    <param name="laser_z_short"             value="0.05"/>
+    <param name="laser_z_max"               value="0.05"/>
+    <param name="laser_z_rand"              value="0.5"/>
+    <param name="laser_sigma_hit"           value="0.2"/>
+    <param name="laser_lambda_short"        value="0.1"/>
+    <param name="laser_model_type"          value="likelihood_field"/>
+    <param name="laser_likelihood_max_dist" value="2.0"/>
+    <param name="update_min_d"              value="0.20"/>
+    <param name="update_min_a"              value="0.2"/>
+    <param name="odom_frame_id"             value="$(arg odom_frame_id)"/> 
+    <param name="base_frame_id"             value="$(arg base_frame_id)"/> 
+    <param name="global_frame_id"           value="$(arg global_frame_id)"/>
+    <param name="resample_interval"         value="1"/>
+    <param name="transform_tolerance"       value="0.5"/>
+    <param name="recovery_alpha_slow"       value="0.0"/>
+    <param name="recovery_alpha_fast"       value="0.0"/>
+    <param name="initial_pose_x"            value="$(arg initial_pose_x)"/>
+    <param name="initial_pose_y"            value="$(arg initial_pose_y)"/>
+    <param name="initial_pose_a"            value="$(arg initial_pose_a)"/>
+    <remap from="scan"                      to="$(arg scan_topic)"/>
+  </node>
+
+  <!-- Run rviz to visualize map creation with precofigured view-->
+  <node pkg="rviz" type="rviz" name="rviz" args="-d $(find project2)/launch/rviz_map.rviz" />
+</launch>
