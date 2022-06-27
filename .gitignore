@@ -67,3 +67,6 @@ maps/
 
 # Ignore ros_readbagfile.py script
 ros_readbagfile.py
+
+# Do not save image map
+map.png

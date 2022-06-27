@@ -17,9 +17,7 @@ public:
     OdomDynamicBroadcaster() {
         odometry_listener = n.subscribe("odom", 1000, &OdomDynamicBroadcaster::broadcastCallback, this);
     }
-    ~OdomDynamicBroadcaster() {
 
-    }
     void broadcastCallback(const nav_msgs::Odometry::ConstPtr& msg) {
 
         geometry_msgs::TransformStamped position_tf;
@@ -46,7 +44,7 @@ public:
 
     void main_loop() {
         ros::spin();
-    };
+    }
 };
 
 // Starts node (broadcast tf from "/odometry" topic)
@@ -55,4 +53,6 @@ int main(int argc, char* argv[]) {
     OdomDynamicBroadcaster odomDynamicBroadcaster;
     ROS_INFO("odom_dynamic_broadcaster: ready");
     odomDynamicBroadcaster.main_loop();
+
+    return 0;
 }
