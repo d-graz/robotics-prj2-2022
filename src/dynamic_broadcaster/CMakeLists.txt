@@ -103,7 +103,7 @@ find_package(catkin REQUIRED COMPONENTS
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
 #  INCLUDE_DIRS include
-LIBRARIES dynamic_broadcaster
+# LIBRARIES dynamic_broadcaster
 CATKIN_DEPENDS roscpp
 #  DEPENDS system_lib
 )

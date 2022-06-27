@@ -38,6 +38,8 @@
         
     </node>
 
+    <node pkg="path_visualizer" type="path_visualizer.py" name="path_visualizer" />
+
 
     <node pkg="amcl" type="amcl" name="amcl">
         <param name="odom_model_type" value="omni" />
