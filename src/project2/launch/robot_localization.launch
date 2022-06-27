@@ -11,7 +11,7 @@
     <node pkg="dynamic_broadcaster" type="odom_dynamic_broadcaster" name="odom_dynamic_broadcaster" output="screen" />
 
     <!-- Set simulation time to avoid removal of messages as old -->
-    <param name="use_sim_time" type="boolean" value="true" />
+    <param name="use_sim_time" value="true" />
 
     <!-- Run rviz to visualize map creation with precofigured view-->
     <node pkg="rviz" type="rviz" name="rviz" args="-d $(find project2)/launch/rviz_loc.rviz" />
@@ -37,9 +37,6 @@
 	    <param name="range_max" value="16.0"/>
         
     </node>
-
-    <node pkg="path_visualizer" type="path_visualizer.py" name="path_visualizer" />
-
 
     <node pkg="amcl" type="amcl" name="amcl">
         <param name="odom_model_type" value="omni" />
@@ -71,4 +68,8 @@
         <param name="recovery_alpha_slow"       value="0.0"/>
         <param name="recovery_alpha_fast"       value="0.0"/>
     </node>
+
+    <!-- unnecessary, can be started manually, breaks the simulation at high rate -->
+    <!-- <node pkg="path_visualizer" type="path_visualizer.py" name="path_visualizer" /> -->
+
 </launch>
