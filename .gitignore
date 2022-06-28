@@ -70,3 +70,5 @@ ros_readbagfile.py
 
 # Do not save image map
 map.png
+map.pgm
+map.yaml
