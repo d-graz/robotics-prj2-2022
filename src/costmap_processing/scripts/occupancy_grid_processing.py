@@ -13,19 +13,19 @@ import numpy as np
 import cv2
 from nav_msgs.msg import OccupancyGrid
 from geometry_msgs.msg import PoseWithCovarianceStamped
+from costmap_processing.srv import SavePath
 import os
-
-# Get current working directory
-cwd = os.getcwd()
 
 image = False
 origin_set = False
 base_pose = (0,0)
 prev_position = (0,0)
+full_path = []
 magnify = 1/scale
-filename = ""
 
-def callback(data):
+color = (path_red, path_green, path_blue)
+
+def mapCallback(data):
 
     origin = data.info.origin.position
 
@@ -66,12 +66,13 @@ def callback(data):
         base_pose = (int(height + origin.y*magnify), int(width + origin.x*magnify))
         print("Setting robot's origin position to", base_pose)
         origin_set = True
-    prev_position = base_pose
-    
-    print("saving map", filename)
-    cv2.imwrite (filename,image)
+        prev_position = base_pose
 
-color = (path_red, path_green, path_blue)
+    print("map updated")
+
+def drawPath():
+    for i in range(len(full_path)-1):
+        cv2.line(image, full_path[i], full_path[i+1], color, path_thickness)
 
 def pathCallback(data):
 
@@ -83,28 +84,36 @@ def pathCallback(data):
     global prev_position
 
     cv2.line(image, prev_position, new_position, color, path_thickness)
+    
     prev_position = new_position
-    print("drawing step [", prev_position, new_position, "]")
-    cv2.imwrite (filename,image)
+
+    global full_path
+    print("new step [", prev_position, new_position, "]")
+    full_path.append(new_position)
+
+def handleSavePath(req):
+    import os
+    try:
+        drawPath()
+        cv2.imwrite(req.str, image)
+        return "Map saved successfully to " + req.str
+    except:
+        return "Something went wrong saving map to " + req.str
 
 def listener():
-
-    import sys
-    if len(sys.argv) < 2:
-        rospy.logerr("Please specify name of the map to save 'path/filename.png'")
-        exit(1)
-    
-    global filename
-    filename = sys.argv[1]
 
     # node name
     rospy.init_node('map_tracker', anonymous=False)
 
     # respond to map update
-    rospy.Subscriber("/map", OccupancyGrid, callback)
+    rospy.Subscriber("/map", OccupancyGrid, mapCallback)
 
     # respond to robot movement
     rospy.Subscriber("/amcl_pose",PoseWithCovarianceStamped, pathCallback)
+    
+    s = rospy.Service('save_path', SavePath, handleSavePath)
+
+    print("Robot's tracker is running")
     
     rospy.spin()
 

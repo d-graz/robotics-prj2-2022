@@ -1,5 +1,7 @@
 <launch>
 
+    <arg name="view_path" default="false" />
+
     <!-- Replicate static tfs transform from inside the bag (offset of robot base and lasers) to avoid errors due to packet loss -->
     
     <!-- Transform base_link -> laser_front for laser front -->
@@ -15,6 +17,12 @@
 
     <!-- Run rviz to visualize map creation with precofigured view-->
     <node pkg="rviz" type="rviz" name="rviz" args="-d $(find project2)/launch/rviz_loc.rviz" />
+
+    <!-- Run the server to keep track of the robot -->
+    <node pkg="costmap_processing" type="occupancy_grid_processing.py" name="occupancy_grid_processing_server" />
+
+    <!-- unnecessary, can be started with param, breaks the simulation at high rate, simply closes itself if not specified differently -->
+    <node pkg="path_visualizer" type="path_visualizer.py" name="path_visualizer" args="$(arg view_path)" output="screen" />
 
     <!-- Run ira_laser_tools and configuration to merge laser scans -->
     <!-- https://qiita.com/MMM-lab/items/84cdf9a8ad97324e10ed -->
@@ -68,8 +76,5 @@
         <param name="recovery_alpha_slow"       value="0.0"/>
         <param name="recovery_alpha_fast"       value="0.0"/>
     </node>
-
-    <!-- unnecessary, can be started manually, breaks the simulation at high rate -->
-    <!-- <node pkg="path_visualizer" type="path_visualizer.py" name="path_visualizer" /> -->
 
 </launch>

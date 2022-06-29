@@ -7,6 +7,12 @@ import rospy
 from visualization_msgs.msg import Marker
 from geometry_msgs.msg import PoseWithCovarianceStamped,Point
 
+import sys
+if len(sys.argv) < 2 or not sys.argv[1] == "true":
+    exit(0)
+
+print("Running with path visualization")
+
 def callback(data):
     add_point = Point()
     add_point.x = data.pose.pose.position.x
