@@ -19,7 +19,7 @@
     <node pkg="rviz" type="rviz" name="rviz" args="-d $(find project2)/launch/rviz_loc.rviz" />
 
     <!-- Run the server to keep track of the robot -->
-    <node pkg="costmap_processing" type="occupancy_grid_processing.py" name="occupancy_grid_processing_server" />
+    <node pkg="costmap_processing" type="occupancy_grid_processing.py" name="occupancy_grid_processing_server" output="screen" />
 
     <!-- unnecessary, can be started with param, breaks the simulation at high rate, simply closes itself if not specified differently -->
     <node pkg="path_visualizer" type="path_visualizer.py" name="path_visualizer" args="$(arg view_path)" output="screen" />

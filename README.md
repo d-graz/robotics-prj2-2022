@@ -24,12 +24,13 @@
     D --static--> E[laser_front]
     D --static--> F[laser_rear]
 ```
+The `odom -> base_footprint` transformation is udsed for robot's movements while the `map -> odom` transformation is used to correct robot's position
 
 ---
 
 ## Bags used
 - Map creation tested with all bags, best result with `robotics1_final.bag`
-- Map localization tested with all bags
+- Map localization done with `robotics2_final.bag` and `robotics3_final.bag`
 
 ---
 
@@ -62,3 +63,5 @@ rosrun costmap_processing path_saver.py <path/image_name.png>
 ## Additional infos:
 - To run localization process a `map_server` must be already running and pubblishing a map
 - Map coordinates in the costmap processing are rotated, so the map image result will appear as rotated, this won't affect path drawing on the map
+- Mapping has been performed with `-r4` bag parameter
+- Localization has been performed wit `-r2` bag parameter

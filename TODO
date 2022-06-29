@@ -1,4 +1,0 @@
-Map creation (choose between gmapping, slam_toolbox, cartographer, hector-slam)
-Localization with amcl
-Odometry publication as tf
-Lasers merge
