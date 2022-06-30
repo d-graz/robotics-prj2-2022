@@ -16,40 +16,41 @@
 ---
 
 ## TF tree structure:
+List of transformations defining the TF tree
 ```mermaid
     graph LR
-    A[map] --> B[odom]
-    B --> C[base_footprint]
-    C --zero--> D[base_link]
-    D --static--> E[laser_front]
-    D --static--> F[laser_rear]
+    map --> odom                        %% used to correct position errors
+    odom --> base_footprint             %% keeps track of the movements
+    base_footprint --zero--> base_link  %% the two frames overlap
+    base_link --static--> laser_front   %% position of the front laser
+    base_link --static--> laser_rear    %% position of the rear laser
 ```
-The `odom -> base_footprint` transformation is udsed for robot's movements while the `map -> odom` transformation is used to correct robot's position
+The `odom -> base_footprint` transformation is udsed for robot's movements, the `map -> odom` transformation is used to correct robot's position
 
 ---
 
 ## Bags used
-- Map creation tested with all bags, best result with `robotics1_final.bag`
-- Map localization done with `robotics2_final.bag` and `robotics3_final.bag`
+- Map created with `robotics1_final.bag` at `-r4` rate
+- Map localization done with `robotics2_final.bag` and `robotics3_final.bag` at `-r2` rate
 
 ---
 
 ## Map creation node
-Map is generated using `slam_gmapping` node of the `gmapping` package
+Map is generated using `map_creation.launch` which uses `slam_gmapping` node of the `gmapping` package
 
 ---
 
 ## How to start-use nodes
 
-- To start the slam environment:
+- To start the SLAM environment:
 ```
 roslaunch project2 map_creation.launch
 ```
 
-- To start the localization environment:\
-(To also visualize path in rviz during localization process use the optinoal parameter `view_path`.\
-**WARNING**: this option is disabled by default since enabling it at high bag rates compromises computation
-```)
+- To start the localization environment
+(set optinoal parameter `view_path` to enable path viewing in rviz
+**WARNING**: this option is disabled by default since enabling it at high bag rates compromises computation):
+```
 roslaunch project2 robot_localization.launch [view_path:=true]
 ```
 
@@ -62,6 +63,6 @@ rosrun costmap_processing path_saver.py <path/image_name.png>
 
 ## Additional infos:
 - To run localization process a `map_server` must be already running and pubblishing a map
-- Map coordinates in the costmap processing are rotated, so the map image result will appear as rotated, this won't affect path drawing on the map
+- Map coordinates in the PNGs appears rotated, so the map image result will appear as rotated, this won't affect path drawing on the map
 - Mapping has been performed with `-r4` bag parameter
 - Localization has been performed wit `-r2` bag parameter
