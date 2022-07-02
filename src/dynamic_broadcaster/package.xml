@@ -2,7 +2,7 @@
 <package format="2">
   <name>dynamic_broadcaster</name>
   <version>0.0.0</version>
-  <description>The dynamic_broadcaster package</description>
+  <description>Dynamically broadcast odometry on tf three</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
   <!-- Example:  -->

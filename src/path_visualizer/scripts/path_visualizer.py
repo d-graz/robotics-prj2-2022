@@ -8,7 +8,10 @@ from visualization_msgs.msg import Marker
 from geometry_msgs.msg import PoseWithCovarianceStamped,Point
 
 import sys
-if len(sys.argv) < 2 or not sys.argv[1] == "true":
+if len(sys.argv) < 2:
+    print("Bad args, expected boolean")
+    exit(1)
+elif sys.argv[1] != "true":
     exit(0)
 
 print("Running with path visualization")
