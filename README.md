@@ -14,6 +14,33 @@
 - `project2` top level package, only contains project's launchfile and rviz config file
 
 ---
+## Usage
+
+- To start the SLAM environment:
+    1. ```
+       roslaunch project2 map_creation.launch
+       ```
+    2. After the bag has finished / when the map is complete
+       ```
+       rosrun map_server map_saver [path/saved_map]
+       ```
+- To start the localization environment:
+    1. ```
+       rosrun map_server map_server <path/map.yaml>
+       ```
+    2. ```
+       roslaunch project2 robot_localization.launch [view_path:=true]
+       ```
+       Set optinoal parameter `view_path` to enable path viewing in rviz\
+        **WARNING**: this option is disabled by default since enabling it at high bag rates compromises computation
+
+
+- To save the map generated during mapping and localization as a png image use the service:
+```
+rosrun costmap_processing path_saver.py <path/image_name.png>
+```
+
+---
 
 ## TF tree structure:
 List of transformations defining the TF tree
@@ -40,26 +67,6 @@ Map is generated using `map_creation.launch` which uses `slam_gmapping` node of 
 
 ---
 
-## How to start-use nodes
-
-- To start the SLAM environment:
-```
-roslaunch project2 map_creation.launch
-```
-
-- To start the localization environment
-(set optinoal parameter `view_path` to enable path viewing in rviz
-**WARNING**: this option is disabled by default since enabling it at high bag rates compromises computation):
-```
-roslaunch project2 robot_localization.launch [view_path:=true]
-```
-
-- To save the map generated during mapping and localization as a png image use the service:
-```
-rosrun costmap_processing path_saver.py <path/image_name.png>
-```
-
----
 
 ## Additional infos:
 - To run localization process a `map_server` must be already running and pubblishing a map
