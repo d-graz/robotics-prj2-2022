@@ -46,7 +46,8 @@
         
     </node>
 
-    <node pkg="amcl" type="amcl" name="amcl"> 
+    <node pkg="amcl" type="amcl" name="amcl">
+        <param name="odom_model_type" value="omni" />
         <param name="odom_model_type"           value="omni"/>
         <param name="odom_alpha1"               value="0.2"/>
         <param name="odom_alpha2"               value="0.2"/>

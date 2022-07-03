@@ -44,7 +44,7 @@ def mapCallback(data):
       image[counter%width][int(counter/width)] = p
       counter+=1
     
-    # image manipulation with OpenCV
+    # do magic things with OpenCV
     kernel = np.ones((2,2),np.uint8)
     image = cv2.dilate(image,kernel,iterations = 1)
     image = cv2.morphologyEx(image, cv2.MORPH_OPEN, kernel)
