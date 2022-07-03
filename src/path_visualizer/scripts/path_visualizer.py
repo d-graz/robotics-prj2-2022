@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 """
 Mark robot's position
 refer to https://www.programcreek.com/python/example/88812/visualization_msgs.msg.Marker
