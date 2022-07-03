@@ -1,4 +1,4 @@
-#!/bin/python
+#!/bin/env python
 
 # path color
 path_red = 0
