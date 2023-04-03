@@ -31,11 +31,13 @@
     2. ```
        roslaunch project2 robot_localization.launch [view_path:=true]
        ```
+       
        Set optinoal parameter `view_path` to enable path viewing in rviz\
         **WARNING**: this option is disabled by default since enabling it at high bag rates compromises computation
 
 
 - To save the map generated during mapping and localization as a png image use the service:
+
 ```
 rosrun costmap_processing path_saver.py <path/image_name.png>
 ```
@@ -46,11 +48,11 @@ rosrun costmap_processing path_saver.py <path/image_name.png>
 List of transformations defining the TF tree
 ```mermaid
     graph LR
-    map --> odom                        %% used to correct position errors
-    odom --> base_footprint             %% keeps track of the movements
-    base_footprint --zero--> base_link  %% the two frames overlap
-    base_link --static--> laser_front   %% position of the front laser
-    base_link --static--> laser_rear    %% position of the rear laser
+    A[map] --> B[odom]
+    B --> C[base_footprint]
+    C --zero--> D[base_link]
+    D --static--> E[laser_front]
+    D --static--> F[laser_rear]
 ```
 The `odom -> base_footprint` transformation is udsed for robot's movements, the `map -> odom` transformation is used to correct robot's position
 
